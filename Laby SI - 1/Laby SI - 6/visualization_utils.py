@@ -50,7 +50,7 @@ def plot_data(x, y, ax=None, plot_xy_range=None, x_grid=None, y_grid=None,
         x2_grid = x_grid[:, 1].reshape((grid_size, grid_size))
         y_grid = y_grid.reshape((grid_size, grid_size))
         CS = ax.contourf(x1_grid, x2_grid, y_grid, np.linspace(0., 1., 51),
-                         alpha=.8, cmap=plt.cm.get_cmap("bwr"))
+                         alpha=.8, cmap=plt.get_cmap("bwr"))
         decision_line = plt.contour(CS, levels=[0.5], colors='k')
         if add_bar:
             cbar = plt.colorbar(CS)
@@ -61,12 +61,12 @@ def plot_data(x, y, ax=None, plot_xy_range=None, x_grid=None, y_grid=None,
         plt.axhline(y=0, color="gray", linestyle=":")
         plt.axvline(x=0, color="gray", linestyle=":")
 
-    ax.scatter(x[:, 0], x[:, 1], c=y.flatten(), s=40, cmap=plt.cm.get_cmap("bwr"), edgecolors='k',
+    ax.scatter(x[:, 0], x[:, 1], c=y.flatten(), s=40, cmap=plt.get_cmap("bwr"), edgecolors='k',
                label='Kółka: Train')
 
     if x_test is not None and y_test is not None:
         ax.scatter(x_test[:, 0], x_test[:, 1], c=y_test.flatten(), marker='s',
-                   s=40, cmap=plt.cm.get_cmap("bwr"), edgecolors='k', label='Kwadraty: Test')
+                   s=40, cmap=plt.get_cmap("bwr"), edgecolors='k', label='Kwadraty: Test')
         plt.legend()
     plt.xlabel(x1_label)
     plt.ylabel(x2_label)
