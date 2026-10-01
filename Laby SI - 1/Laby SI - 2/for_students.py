@@ -67,65 +67,68 @@ def findNBest(items, knapsack_max_capacity, population, n):
     return bests
 
 
-items, knapsack_max_capacity = get_big()
-print(items)
+def genetic_algorithm(items, knapsack_max_capacity, population_size=100, generations=200,
+                      n_selection=20, n_elite=5, mutation_rate=None):
+    #returns the best solution, its fitness, the best fitness after every generation and all populations
+    if mutation_rate is None:
+        mutation_rate = 1/len(items)
+    best_solution = None
+    best_fitness = 0
+    population_history = []
+    best_history = []
+    population = initial_population(len(items), population_size)
+    for _ in range(generations):
+        population_history.append(population)
 
-population_size = 100
-mutation_rate = 1/len(items)
-generations = 200
-n_selection = 20
-n_elite = 5
-
-start_time = time.time()
-best_solution = None
-best_fitness = 0
-population_history = []
-best_history = []
-population = initial_population(len(items), population_size)
-for _ in range(generations):
-    population_history.append(population)
-    
-    best_individual, best_individual_fitness = population_best(items, knapsack_max_capacity, population)
-    if best_individual_fitness > best_fitness:
-        best_solution = best_individual
-        best_fitness = best_individual_fitness
-    best_history.append(best_fitness)
+        best_individual, best_individual_fitness = population_best(items, knapsack_max_capacity, population)
+        if best_individual_fitness > best_fitness:
+            best_solution = best_individual
+            best_fitness = best_individual_fitness
+        best_history.append(best_fitness)
 
 
 
-    selected = tournamentSelection(items, knapsack_max_capacity, population, n_selection)
-    new_population = []
-    for _ in range(int(population_size/2)):
-        parent1, parent2 = random.sample(selected, 2)
-        offspring1,offspring2 = createOffspring(parent1, parent2)
-        offspring1 = mutation(offspring1, mutation_rate)
-        offspring2 = mutation(offspring2, mutation_rate)
-        new_population.append(offspring1)
-        new_population.append(offspring2)
-    #population_sorted_by_fitness = sorted(population, key=lambda individual: fitness(items, knapsack_max_capacity, individual), reverse=True)
-    bests = findNBest(items, knapsack_max_capacity, population, n_elite)
-    for i in range(n_elite):
-        new_population[i] = bests[i]
-    population = new_population
+        selected = tournamentSelection(items, knapsack_max_capacity, population, n_selection)
+        new_population = []
+        for _ in range(int(population_size/2)):
+            parent1, parent2 = random.sample(selected, 2)
+            offspring1,offspring2 = createOffspring(parent1, parent2)
+            offspring1 = mutation(offspring1, mutation_rate)
+            offspring2 = mutation(offspring2, mutation_rate)
+            new_population.append(offspring1)
+            new_population.append(offspring2)
+        #population_sorted_by_fitness = sorted(population, key=lambda individual: fitness(items, knapsack_max_capacity, individual), reverse=True)
+        bests = findNBest(items, knapsack_max_capacity, population, n_elite)
+        for i in range(n_elite):
+            new_population[i] = bests[i]
+        population = new_population
+    return best_solution, best_fitness, best_history, population_history
 
-end_time = time.time()
-total_time = end_time - start_time
-print('Best solution:', list(compress(items['Name'], best_solution)))
-print('Best solution value:', best_fitness)
-print('Time: ', total_time)
 
-# plot generations
-x = []
-y = []
-top_best = 10
-for i, population in enumerate(population_history):
-    plotted_individuals = min(len(population), top_best)
-    x.extend([i] * plotted_individuals)
-    population_fitnesses = [fitness(items, knapsack_max_capacity, individual) for individual in population]
-    population_fitnesses.sort(reverse=True)
-    y.extend(population_fitnesses[:plotted_individuals])
-plt.scatter(x, y, marker='.')
-plt.plot(best_history, 'r')
-plt.xlabel('Generation')
-plt.ylabel('Fitness')
-plt.show()
+if __name__ == "__main__":
+    items, knapsack_max_capacity = get_big()
+    print(items)
+
+    start_time = time.time()
+    best_solution, best_fitness, best_history, population_history = genetic_algorithm(items, knapsack_max_capacity)
+    end_time = time.time()
+    total_time = end_time - start_time
+    print('Best solution:', list(compress(items['Name'], best_solution)))
+    print('Best solution value:', best_fitness)
+    print('Time: ', total_time)
+
+    # plot generations
+    x = []
+    y = []
+    top_best = 10
+    for i, population in enumerate(population_history):
+        plotted_individuals = min(len(population), top_best)
+        x.extend([i] * plotted_individuals)
+        population_fitnesses = [fitness(items, knapsack_max_capacity, individual) for individual in population]
+        population_fitnesses.sort(reverse=True)
+        y.extend(population_fitnesses[:plotted_individuals])
+    plt.scatter(x, y, marker='.')
+    plt.plot(best_history, 'r')
+    plt.xlabel('Generation')
+    plt.ylabel('Fitness')
+    plt.show()

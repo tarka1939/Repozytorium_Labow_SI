@@ -23,8 +23,11 @@
   <ItemGroup>
     <Compile Include="brute_force.py" />
     <Compile Include="data.py" />
+    <Compile Include="exact.py" />
+    <Compile Include="experiment.py" />
     <Compile Include="for_students.py" />
     <Compile Include="Laby_SI___2.py" />
+    <Compile Include="test_knapsack.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="knapsack-big.csv" />
