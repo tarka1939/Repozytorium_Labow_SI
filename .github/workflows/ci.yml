@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lab:
+    name: ${{ matrix.lab }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - lab: "Lab 1: linear regression"
+            dir: Laby SI - 1/Laby SI
+            run: python for_students.py
+          - lab: "Lab 2: knapsack GA"
+            dir: Laby SI - 1/Laby SI - 2
+            tests: test_knapsack.py
+            run: python exact.py && python for_students.py && python experiment.py 3
+          - lab: "Lab 3: Connect Four"
+            dir: Laby SI - 1/Laby SI - 3
+            tests: test_connect4.py
+            run: python tournament.py 1
+          - lab: "Lab 4: random forest"
+            dir: Laby SI - 1/Laby SI - 4
+            tests: test_random_forest.py
+            run: python main.py && python experiment.py 3
+          - lab: "Lab 5: k-means"
+            dir: Laby SI - 1/Laby SI - 5
+            tests: test_k_means.py
+            run: python main.py && python experiment.py 10
+          - lab: "Lab 6: neural networks"
+            dir: Laby SI - 1/Laby SI - 6
+            # CPU build of torch; the default PyPI wheel for Linux pulls in the CUDA libraries
+            setup: pip install torch --index-url https://download.pytorch.org/whl/cpu
+            run: python part1_net_architecture_in_numpy.py && python part2_net_training_in_pytorch.py
+          - lab: "Lab 7: Q-learning"
+            dir: Laby SI - 1/Laby SI - 7
+            run: python main.py test
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    env:
+      MPLBACKEND: Agg          # plots are rendered off-screen, plt.show() returns immediately
+      SDL_VIDEODRIVER: dummy   # pygame without a display
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          ${{ matrix.setup }}
+          pip install -r requirements.txt
+      - name: Tests
+        if: matrix.tests
+        run: python ${{ matrix.tests }}
+      - name: Run the lab
+        run: ${{ matrix.run }}
