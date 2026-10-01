@@ -49,10 +49,7 @@ class Connect4:
                 yield [self.board[n_row+i][self.width-1-n_column-i] for i in range(4)]  # increasing
 
     def _check_game_over(self):
-        if not self.possible_drops():
-            self.wins = None  # tie
-            return True
-
+        # look for a four first: the move that fills the board can also complete a four
         for four in self.iter_fours():
             if four == ['o', 'o', 'o', 'o']:
                 self.wins = 'o'
@@ -60,6 +57,10 @@ class Connect4:
             elif four == ['x', 'x', 'x', 'x']:
                 self.wins = 'x'
                 return True
+
+        self.wins = None
+        if not self.possible_drops():
+            return True  # tie
         return False
 
     def draw(self):

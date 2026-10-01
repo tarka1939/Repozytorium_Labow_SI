@@ -38,15 +38,10 @@ def simple_score(position: Connect4, token="x"):
 
     opponent_token = 'o' if token == 'x' else 'x'
 
+    #empty cells are '_' (see Connect4.__init__)
     for four in position.iter_fours():
-        score += four.count(token) == 3 and four.count(None) == 1
-        score -= four.count(opponent_token) == 3 and four.count(None) == 1
-
-    return score
-
-    score = 0
-
-    raise NotImplementedError("Implement simple_score function")
+        score += four.count(token) == 3 and four.count('_') == 1
+        score -= four.count(opponent_token) == 3 and four.count('_') == 1
 
     return score
 
@@ -66,14 +61,12 @@ def advanced_score(position: Connect4, token="x"):
     
     #add a point for each token in the center column
     #remove a point for each token of oponent in the center column
-    center_column = position.center_column()
-    for token in center_column:
-        if token == token:
+    #(skipped when the game is over: a win or a loss outweighs everything else)
+    if position._check_game_over():
+        return score
+    for cell in position.center_column():
+        if cell == token:
             score += 1
-        elif token != None:
+        elif cell != '_':
             score -= 1
-    return score
-
-    raise NotImplementedError("Implement advanced_score function")
-
     return score

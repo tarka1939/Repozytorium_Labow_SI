@@ -30,6 +30,8 @@
     <Compile Include="heuristics.py" />
     <Compile Include="pvp.py" />
     <Compile Include="randomagent.py" />
+    <Compile Include="test_connect4.py" />
+    <Compile Include="tournament.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />

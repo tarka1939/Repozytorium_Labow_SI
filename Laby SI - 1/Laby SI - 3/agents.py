@@ -48,9 +48,17 @@ class MinMaxAgent(Agent):
         best_move, best_score = self.minmax(connect4, depth=self.depth)
         return best_move
 
+    def evaluate(self, connect4: Connect4, depth):
+        score = self.heuristic_fun(connect4, self.my_token)
+        if connect4.wins is not None:
+            # depth = plies left unsearched, so a win found sooner gets more and a loss found later costs less;
+            # without this every win scores the same and the agent can keep postponing one it already has
+            score += depth if connect4.wins == self.my_token else -depth
+        return score
+
     def minmax(self, connect4: Connect4, depth=4, maximizing=True):
         if depth == 0 or connect4._check_game_over():
-            return None, self.heuristic_fun(connect4, self.my_token)
+            return None, self.evaluate(connect4, depth)
         else:
             if maximizing:
                 best_move = None
@@ -103,7 +111,7 @@ class AlphaBetaAgent(MinMaxAgent):
         beta=sys.maxsize,
     ):
         if depth == 0 or connect4._check_game_over():
-            return None, self.heuristic_fun(connect4, self.my_token)
+            return None, self.evaluate(connect4, depth)
         else:
             if maximizing:
                 best_move = None
