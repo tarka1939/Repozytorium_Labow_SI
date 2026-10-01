@@ -19,3 +19,7 @@ env/
 # OS junk
 .DS_Store
 Thumbs.db
+
+# Lab 7: every training run writes saved_models/.../run-<date>/; only the run used in the README is kept
+Laby SI - 1/Laby SI - 7/saved_models/FrozenLake/QAgent/run-*/
+!Laby SI - 1/Laby SI - 7/saved_models/FrozenLake/QAgent/run-2025-06-04_10-53-22/

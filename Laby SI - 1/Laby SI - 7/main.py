@@ -1,4 +1,5 @@
 ﻿import os
+import sys
 from envs.frozen_lake import FrozenLake
 from gui.main_pygame import main_pygame
 from gui.manual_pygame_agent import ManualPygameAgent
@@ -12,7 +13,9 @@ if __name__ == '__main__':
     agent = 'q_learning'            # 'q_learning' or 'manual'
 
     render = False
-    mode = 'train'                  # 'train' or 'test'
+    mode = sys.argv[1] if len(sys.argv) > 1 else 'train'   # 'train' or 'test'
+    if mode not in ('train', 'test'):
+        raise ValueError("usage: python main.py [train|test]")
 
     env = FrozenLake()
 
