@@ -52,7 +52,7 @@ print(f"{mse_train=}, {mse_test=}")
  
 # plot the regression line
 x = np.linspace(min(x_test), max(x_test), 100)
-y = float(theta_best[0]) + float(theta_best[1]) * x
+y = theta_best[0, 0] + theta_best[1, 0] * x
 plt.plot(x, y)
 plt.scatter(x_test, y_test)
 plt.xlabel('Weight')
@@ -87,10 +87,14 @@ for epoch in range(1000):
 # TODO: calculate error
  
 x_test = (x_test-m)/s
+X_test_norm, _ = formulate_matrix(x_test, y_test)
+mse_test_gd = mse(X_test_norm @ theta, Y_test)
+# gradient descent on standardized x should reach the same line as the closed-form solution
+print(f"{mse_test_gd=} (closed form: {mse_test})")
  
 # plot the regression line
 x = np.linspace(min(x_test), max(x_test), 100)
-y = float(theta[0]) + float(theta[1]) * x
+y = theta[0, 0] + theta[1, 0] * x
 plt.plot(x, y)
 plt.scatter(x_test, y_test)
 plt.xlabel('Weight')

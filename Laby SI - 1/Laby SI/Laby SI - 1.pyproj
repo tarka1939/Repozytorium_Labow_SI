@@ -5,7 +5,7 @@
     <ProjectGuid>360f262c-71ee-4caf-b93a-7ef36078be8d</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Laby_SI.py</StartupFile>
+    <StartupFile>for_students.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,7 +24,6 @@
   <ItemGroup>
     <Compile Include="data.py" />
     <Compile Include="for_students.py" />
-    <Compile Include="Laby_SI.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

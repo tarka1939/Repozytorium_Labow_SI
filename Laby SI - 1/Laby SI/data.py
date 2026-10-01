@@ -1,9 +1,12 @@
+import os
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 def get_data():
-    url = 'http://archive.ics.uci.edu/ml/machine-learning-databases/auto-mpg/auto-mpg.data'
+    # Auto MPG data set from the UCI Machine Learning Repository (CC BY 4.0), kept in the repository so
+    # the lab runs offline: https://archive.ics.uci.edu/ml/machine-learning-databases/auto-mpg/auto-mpg.data
+    url = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'auto-mpg.data')
     column_names = ['MPG', 'Cylinders', 'Displacement', 'Horsepower', 'Weight',
                     'Acceleration', 'Model Year', 'Origin']
 
