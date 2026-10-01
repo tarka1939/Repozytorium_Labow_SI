@@ -29,7 +29,7 @@ class RandomForest:
     def bagging(self, X, y):
         # Randomly select samples with replacement
         n_samples = X.shape[0]
-        selected_indices = np.random.choice(n_samples, n_samples, replace=False)
+        selected_indices = np.random.choice(n_samples, n_samples, replace=True)
         X_selected = X[selected_indices]
         y_selected = y[selected_indices]
         return X_selected, y_selected

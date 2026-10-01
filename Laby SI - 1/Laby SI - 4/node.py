@@ -46,7 +46,9 @@ class Node:
 
         # TODO find position of best data split
         for idx in range(len(possible_splits)):
-            gain = self.gini_gain(y, possible_splits[idx])
+            # split point i puts elements 0..i on the left (the threshold is the midpoint of i and i+1),
+            # so the left part is y[:i+1]
+            gain = self.gini_gain(y, possible_splits[idx] + 1)
             if gain > best_gain:
                 best_gain = gain
                 best_idx = possible_splits[idx]
@@ -93,7 +95,8 @@ class Node:
 
         best_value = np.mean(X[best_split[1], best_split[0]])
 
-        return best_split[0], best_value
+        # d indexes the selected subset of columns; return the index of the column in the full X
+        return features[best_split[0]], best_value
 
     def predict(self, x):
         if self.feature_idx is None:

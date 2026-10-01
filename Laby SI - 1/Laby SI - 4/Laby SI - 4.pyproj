@@ -26,6 +26,8 @@
     <Compile Include="main.py" />
     <Compile Include="node.py" />
     <Compile Include="random_forest.py" />
+    <Compile Include="experiment.py" />
+    <Compile Include="test_random_forest.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
